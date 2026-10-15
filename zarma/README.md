@@ -4,7 +4,9 @@
 
 - Абетка, правопис і короткий огляд граматики — у цьому файлі.
 - **Повна граматика** — у [`grammatyka.md`](grammatyka.md).
-- **Повний словник** — у [`data/slovnyk.tsv`](data/slovnyk.tsv); базові слова — у [`slovnyk.md`](slovnyk.md).
+- **Повний словник** (19 619 слів, 30 тем) — у [`data/slovnyk.tsv`](data/slovnyk.tsv); базові слова — у [`slovnyk.md`](slovnyk.md).
+- **Сторінка-словник з перекладачем** — [`index.html`](index.html) (відкривається в браузері).
+- Як поповнювати словник: файли тем лежать у `data/raw/`, правила для нових слів — у `data/SPEC.md`; після змін запустіть `python3 data/merge.py && python3 data/build_page.py`.
 
 > *Здравѣ! Мас имѣ Зарьма ба.* — Привіт! Мене звати Зарьма.
 
