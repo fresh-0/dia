@@ -65,6 +65,20 @@ def norm_uk(s):
     return re.sub(r"\s+", " ", s.strip().lower())
 
 
+def glosses(s):
+    s = re.sub(r"\([^)]*\)", "", s.lower())
+    items = {re.sub(r"\s+", " ", g).strip(" .!?") for g in re.split(r"[;,]", s)}
+    return {g for g in items if g}
+
+
+def same_meaning(a, b):
+    ga, gb = glosses(a), glosses(b)
+    if ga & gb:
+        return True
+    heads = lambda gs: {g.split()[0][:5] for g in gs if len(g.split()[0]) >= 4}
+    return bool(heads(ga) & heads(gb))
+
+
 def main():
     log = []
     sources = [("00_core", load_core())]
@@ -93,7 +107,7 @@ def main():
                 continue
             if word in entries:
                 prev = entries[word]
-                if norm_uk(prev[2]) == norm_uk(row[2]) or prev[0] == word and name == prev[6]:
+                if same_meaning(prev[2], row[2]) or prev[6] == name:
                     continue  # дублікат
                 new = mutate(word, entries)
                 renames[word] = new

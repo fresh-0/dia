@@ -1,0 +1,383 @@
+<title>Словник зарьми</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a lexicon desk — narrow column, search on top, tabs for Словник / Перекладач / Граматика, entries as ruled index cards. */
+:root {
+  --paper: #eef1f6;
+  --sheet: #f9fafc;
+  --ink: #1b2233;
+  --muted: #5b6478;
+  --rule: #d3d9e4;
+  --accent: #2f3f8f;
+  --accent-soft: #e1e5f4;
+  --dawn: #b4561f;
+  --display: "Old Standard TT", "Noto Serif", Georgia, serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10141f; --sheet: #171c2a; --ink: #e6e9f2; --muted: #9aa3b8;
+    --rule: #2a3245; --accent: #a9b6f2; --accent-soft: #232b45; --dawn: #f0a35e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #10141f; --sheet: #171c2a; --ink: #e6e9f2; --muted: #9aa3b8;
+  --rule: #2a3245; --accent: #a9b6f2; --accent-soft: #232b45; --dawn: #f0a35e;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+}
+.wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+header { display: flex; flex-direction: column; gap: 6px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.05; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+h1 .z { color: var(--dawn); }
+.lede { color: var(--muted); margin: 0; max-width: 62ch; }
+.stats { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+nav { display: flex; gap: 4px; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
+nav button { font: 500 14px var(--body); color: var(--muted); background: none; border: 0; padding: 10px 14px; border-bottom: 2px solid transparent; cursor: pointer; margin-bottom: -1px; }
+nav button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--dawn); }
+nav button:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; }
+input[type="search"], select, textarea {
+  font: 16px var(--body); color: var(--ink); background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px;
+}
+input[type="search"] { flex: 1 1 260px; min-width: 0; font-family: var(--display); font-size: 18px; }
+select { flex: 0 1 auto; }
+textarea { width: 100%; min-height: 110px; resize: vertical; font-family: var(--display); font-size: 18px; }
+.kbd { display: flex; gap: 4px; flex-wrap: wrap; }
+.kbd button { font: 18px var(--display); width: 36px; height: 36px; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); border-radius: 6px; cursor: pointer; }
+.kbd button:hover { border-color: var(--accent); }
+.meta { font-size: 13px; color: var(--muted); }
+.list { display: flex; flex-direction: column; background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; }
+.entry { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); gap: 4px 16px; padding: 12px 16px; border-top: 1px solid var(--rule); cursor: pointer; }
+.entry:first-child { border-top: 0; }
+.entry:hover { background: var(--accent-soft); }
+.entry .w { font-family: var(--display); font-size: 20px; font-weight: 700; overflow-wrap: anywhere; }
+.entry .d { min-width: 0; }
+.entry .uk { overflow-wrap: anywhere; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.chip { font: 500 11px var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 2px 7px; border-radius: 99px; }
+.chip.style { color: var(--dawn); background: transparent; border: 1px solid currentColor; }
+.note { font-size: 13px; color: var(--muted); margin-top: 4px; overflow-wrap: anywhere; }
+.syn a { color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+@media (max-width: 520px) { .entry { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.card h2 { font-family: var(--display); font-size: 26px; margin: 0; }
+.card h3 { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 6px 0 0; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 12px var(--body); color: var(--muted); }
+td.z { font-family: var(--display); font-size: 17px; }
+.more { align-self: center; font: 500 14px var(--body); color: var(--accent); background: none; border: 1px solid var(--rule); border-radius: 6px; padding: 8px 16px; cursor: pointer; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.btn { font: 500 14px var(--body); color: var(--sheet); background: var(--accent); border: 0; border-radius: 6px; padding: 9px 16px; cursor: pointer; }
+.btn.ghost { color: var(--accent); background: transparent; border: 1px solid var(--rule); }
+.out { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+.tok { display: flex; flex-direction: column; min-width: 0; }
+.tok .zz { font-family: var(--display); font-size: 20px; font-weight: 700; }
+.tok .gg { font-size: 12px; color: var(--muted); max-width: 16ch; overflow-wrap: anywhere; }
+.tok.miss .zz { color: var(--dawn); font-weight: 400; font-style: italic; }
+.plain { font-family: var(--display); font-size: 20px; line-height: 1.5; overflow-wrap: anywhere; }
+.gram p, .gram li { max-width: 66ch; }
+.gram code { font-family: var(--display); font-size: 1.1em; color: var(--accent); }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) { .entry { transition: background .12s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1><span class="z">Зарьма</span> — словник</h1>
+    <p class="lede">Штучна мова на кирилиці зі старими літерами ѣ, ѫ, ѳ. Шукайте слово українською або зарьмою, відкривайте відмінювання та перекладайте фрази слово за словом.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <nav role="tablist">
+    <button role="tab" id="t-dict" aria-selected="true" data-tab="dict">Словник</button>
+    <button role="tab" id="t-tr" aria-selected="false" data-tab="tr">Перекладач</button>
+    <button role="tab" id="t-gr" aria-selected="false" data-tab="gr">Граматика коротко</button>
+  </nav>
+
+  <section id="p-dict" class="pane" style="display:flex;flex-direction:column;gap:14px">
+    <div class="controls">
+      <input type="search" id="q" placeholder="кіт / мырк / любити…" autocomplete="off">
+      <select id="pos" aria-label="Частина мови"><option value="">Усі частини мови</option></select>
+      <select id="theme" aria-label="Тема"><option value="">Усі теми</option></select>
+    </div>
+    <div class="kbd" aria-label="Особливі літери">
+      <button type="button" data-ch="ѣ">ѣ</button><button type="button" data-ch="ѫ">ѫ</button><button type="button" data-ch="ѳ">ѳ</button><button type="button" data-ch="ы">ы</button><button type="button" data-ch="ъ">ъ</button><button type="button" data-ch="ь">ь</button>
+    </div>
+    <div id="detail" hidden></div>
+    <div class="meta" id="count"></div>
+    <div class="list" id="list"></div>
+    <button class="more" id="more" hidden>Показати ще</button>
+  </section>
+
+  <section id="p-tr" class="pane" hidden style="flex-direction:column;gap:14px">
+    <div class="row">
+      <button class="btn" id="dir-uz" type="button">Українська → Зарьма</button>
+      <button class="btn ghost" id="dir-zu" type="button">Зарьма → Українська</button>
+    </div>
+    <textarea id="src" aria-label="Текст для перекладу">Я люблю кота і зірки</textarea>
+    <div class="kbd" id="kbd2">
+      <button type="button" data-ch="ѣ">ѣ</button><button type="button" data-ch="ѫ">ѫ</button><button type="button" data-ch="ѳ">ѳ</button><button type="button" data-ch="ы">ы</button><button type="button" data-ch="ъ">ъ</button><button type="button" data-ch="ь">ь</button>
+    </div>
+    <div class="card">
+      <h3 id="tr-head">Пословний переклад</h3>
+      <div class="out" id="tr-out"></div>
+      <div class="plain" id="tr-plain"></div>
+      <p class="note" id="tr-note"></p>
+    </div>
+  </section>
+
+  <section id="p-gr" class="pane card gram" hidden>
+    <h2>Граматика в одному екрані</h2>
+    <h3>Порядок слів</h3>
+    <p>Підмет → час → місце → додаток → <b>дієслово в кінці</b>. Прикметник і родовий відмінок стоять перед іменником. Прикметники не змінюються.</p>
+    <p><code>Ма заутр лѣсѣ ѳис дрѣном видош.</code> — Завтра я побачу твого друга в лісі.</p>
+    <h3>Іменник</h3>
+    <p>Множина: <code>-ен</code> після приголосної, <code>-н</code> після голосної. Відмінки (після множини): знахідний <code>-ом/-м</code>, родовий <code>-ис/-с</code>, місцевий <code>-ѣ</code>, орудний <code>-ку</code>, відкладний <code>-от/-т</code>.</p>
+    <h3>Дієслово</h3>
+    <p>Словникова форма на <code>-ѫн</code>. Особа не змінює дієслово. Теперішній <code>-а</code>, минулий <code>-ыл</code>, майбутній <code>-ош</code>, умовний <code>-ѣт</code>, наказовий <code>-и</code>. Префікси: <code>жа-</code> заперечення, <code>ѳо-</code> доконаний вид, <code>са-</code> зворотність. Пасив <code>-ус-</code>, спонукальне <code>-ит-</code>.</p>
+    <h3>Займенники</h3>
+    <p><code>ма</code> я, <code>ѳи</code> ти, <code>ен</code> він/вона/воно, <code>мар</code> ми, <code>ѳир</code> ви, <code>енар</code> вони. Питання так/ні починаються з <code>хе</code>.</p>
+    <p>Повна граматика — у файлі <b>grammatyka.md</b> репозиторію.</p>
+  </section>
+</div>
+
+<script>
+const DATA = /*DATA*/[];
+const THEMES = /*THEMES*/{};
+const POSN = {"ім":"іменник","дс":"дієслово","пр":"прикметник","присл":"прислівник","займ":"займенник","числ":"числівник","спол":"сполучник","част":"частка","вигук":"вигук","післ":"післяйменник","вираз":"вираз"};
+const V = "аеѣиоѫуы";
+const $ = s => document.querySelector(s);
+const byWord = new Map();
+DATA.forEach((r, i) => { if (!byWord.has(r[0].toLowerCase())) byWord.set(r[0].toLowerCase(), i); });
+
+// ---------- dictionary ----------
+$("#stats").textContent = `${DATA.length.toLocaleString("uk-UA")} слів · ${Object.keys(THEMES).length} тем`;
+Object.entries(POSN).forEach(([k, v]) => $("#pos").insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`));
+Object.entries(THEMES).forEach(([k, v]) => $("#theme").insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`));
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let results = [], shown = 0;
+function search() {
+  const q = $("#q").value.trim().toLowerCase(), p = $("#pos").value, t = $("#theme").value;
+  const starts = [], contains = [];
+  for (let i = 0; i < DATA.length; i++) {
+    const r = DATA[i];
+    if (p && r[1] !== p) continue;
+    if (t && r[6] !== t) continue;
+    if (!q) { starts.push(i); continue; }
+    const w = r[0].toLowerCase(), uk = r[2].toLowerCase();
+    if (w === q || uk.split(/[;,]\s*/).includes(q)) starts.unshift(i);
+    else if (w.startsWith(q) || uk.startsWith(q)) starts.push(i);
+    else if (w.includes(q) || uk.includes(q)) contains.push(i);
+  }
+  results = starts.concat(contains); shown = 0;
+  $("#list").innerHTML = "";
+  $("#count").textContent = q || p || t ? `Знайдено: ${results.length.toLocaleString("uk-UA")}` : "Усі слова за абеткою";
+  page();
+}
+function entryHTML(i) {
+  const r = DATA[i];
+  const syn = r[4] ? `<div class="note syn">Синоніми: ${r[4].split(/,\s*/).map(s => `<a data-w="${esc(s)}">${esc(s)}</a>`).join(", ")}</div>` : "";
+  return `<div class="entry" data-i="${i}" tabindex="0"><div class="w">${esc(r[0])}</div><div class="d"><div class="uk">${esc(r[2])}</div>
+  <div class="chips"><span class="chip">${POSN[r[1]] || r[1]}</span>${r[3] && r[3] !== "нейтр" ? `<span class="chip style">${esc(r[3])}</span>` : ""}<span class="chip">${esc(THEMES[r[6]] || "")}</span></div>
+  ${syn}${r[5] ? `<div class="note">${esc(r[5])}</div>` : ""}</div></div>`;
+}
+function page() {
+  const html = results.slice(shown, shown + 60).map(entryHTML).join("");
+  $("#list").insertAdjacentHTML("beforeend", html);
+  shown += 60;
+  $("#more").hidden = shown >= results.length;
+  $("#list").hidden = results.length === 0;
+}
+let timer;
+$("#q").addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(search, 120); });
+$("#pos").addEventListener("change", search);
+$("#theme").addEventListener("change", search);
+$("#more").addEventListener("click", page);
+$("#list").addEventListener("click", e => {
+  const a = e.target.closest("a[data-w]");
+  if (a) { $("#q").value = a.dataset.w; search(); return; }
+  const en = e.target.closest(".entry"); if (en) showDetail(+en.dataset.i);
+});
+$("#list").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.classList.contains("entry")) showDetail(+e.target.dataset.i); });
+document.querySelectorAll(".kbd").forEach(k => k.addEventListener("click", e => {
+  const b = e.target.closest("button[data-ch]"); if (!b) return;
+  const inp = k.id === "kbd2" ? $("#src") : $("#q");
+  const s = inp.selectionStart ?? inp.value.length;
+  inp.value = inp.value.slice(0, s) + b.dataset.ch + inp.value.slice(inp.selectionEnd ?? s);
+  inp.focus(); inp.selectionStart = inp.selectionEnd = s + 1;
+  inp.dispatchEvent(new Event("input"));
+}));
+
+// ---------- morphology ----------
+const isV = c => V.includes(c);
+function nounForms(w) {
+  const vow = isV(w.at(-1));
+  const pl = w + (vow ? "н" : "ен");
+  const cases = [["Називний", "", ""], ["Знахідний", "м", "ом"], ["Родовий", "с", "ис"], ["Місцевий", "ѣ", "ѣ"], ["Орудний", "ку", "ку"], ["Відкладний", "т", "от"]];
+  return cases.map(([n, a, b]) => [n, w + (vow ? a : b), pl + b]);
+}
+function vjoin(stem, suf) { return stem + (isV(stem.at(-1)) && isV(suf[0]) ? "й" : "") + suf; }
+function verbForms(w) {
+  const s = w.slice(0, -2);
+  const rows = [["Теперішній", "а"], ["Минулий", "ыл"], ["Давноминулий", "ылыл"], ["Майбутній", "ош"], ["Умовний", "ѣт"], ["Умовний минулий", "ылѣт"], ["Наказовий", "и"], ["Наказовий ввічливий", "ими"], ["Дієприкметник активний", "ин"], ["Дієприкметник минулий", "ылин"], ["Дієприкметник пасивний", "ут"], ["Дієприслівник", "ѣш"], ["Віддієслівний іменник", "ода"], ["Виконавець", "ар"]];
+  const neg = p => (isV(s[0]) ? p + "ъ" : p);
+  return rows.map(([n, x]) => [n, vjoin(s, x), neg("жа") + vjoin(s, x), neg("ѳо") + vjoin(s, x)]);
+}
+function showDetail(i) {
+  const r = DATA[i], d = $("#detail");
+  let tbl = "";
+  if (r[1] === "ім") tbl = `<div class="tbl"><table><tr><th>Відмінок</th><th>Однина</th><th>Множина</th></tr>${nounForms(r[0]).map(x => `<tr><td>${x[0]}</td><td class="z">${x[1]}</td><td class="z">${x[2]}</td></tr>`).join("")}</table></div>`;
+  else if (r[1] === "дс") tbl = `<div class="tbl"><table><tr><th>Форма</th><th>Ствердна</th><th>Заперечна</th><th>Доконана</th></tr>${verbForms(r[0]).map(x => `<tr><td>${x[0]}</td><td class="z">${x[1]}</td><td class="z">${x[2]}</td><td class="z">${x[3]}</td></tr>`).join("")}</table></div>`;
+  else if (r[1] === "пр") tbl = `<div class="tbl"><table><tr><th>Форма</th><th>Слово</th></tr><tr><td>Звичайна</td><td class="z">${r[0]}</td></tr><tr><td>Вищий ступінь</td><td class="z">${r[0]}ойш</td></tr><tr><td>Найвищий ступінь</td><td class="z">ѳа${isV(r[0][0]) ? "ъ" : ""}${r[0]}ойш</td></tr><tr><td>Прислівник</td><td class="z">${r[0]}ши</td></tr><tr><td>Якість (іменник)</td><td class="z">${r[0]}ода</td></tr></table></div>`;
+  d.innerHTML = `<div class="card"><div class="row" style="justify-content:space-between"><h2>${esc(r[0])}</h2><button class="btn ghost" id="close" type="button">Закрити</button></div><div>${esc(r[2])}</div>${tbl}</div>`;
+  d.hidden = false;
+  $("#close").onclick = () => { d.hidden = true; };
+  d.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+}
+
+// ---------- translator ----------
+const UK_END = ["ями","ами","ові","еві","ого","ому","ими","іми","ують","ють","ать","ять","іть","ить","ала","ало","али","ила","ило","или","ів","їв","ах","ях","ам","ям","ом","ем","ою","ею","ий","ій","ої","ти","ть","ла","ло","ли","ує","є","у","ю","а","я","о","е","и","і","ї","ь","в"];
+function ukStem(w) {
+  w = w.toLowerCase().replace(/[ʼ'’]/g, "");
+  if (w.length > 4 && /(ся|сь)$/.test(w)) w = w.slice(0, -2);
+  for (const e of UK_END) if (w.endsWith(e) && w.length - e.length >= 3) return w.slice(0, -e.length);
+  return w;
+}
+const STYLE_RANK = { "": 0, "нейтр": 0, "офіц": 1, "розм": 2, "поет": 3, "наук": 3, "дит": 4, "застар": 5, "зневаж": 6 };
+const ukExact = new Map(), ukStemMap = new Map(), ukLoose = new Map();
+const loose = s => s.replace(/[іїє]/g, m => ({"і":"о","ї":"о","є":"е"}[m]));
+DATA.forEach((r, i) => {
+  if (r[1] === "вираз") return;
+  r[2].toLowerCase().replace(/\([^)]*\)/g, "").split(/[;,]/).map(s => s.trim()).filter(Boolean).forEach((g, gi) => {
+    const add = (m, k) => {
+      const score = gi * 10 + (STYLE_RANK[r[3]] ?? 3) - (r[6] === "00_core" ? 5 : 0);
+      let slot = m.get(k); if (!slot) m.set(k, slot = {});
+      const cur = slot[r[1]]; if (!cur || score < cur[1]) slot[r[1]] = [i, score];
+      if (!slot.any || score < slot.any[1]) slot.any = [i, score];
+    };
+    add(ukExact, g);
+    if (!g.includes(" ")) {
+      const st = ukStem(g); add(ukStemMap, st);
+      const l = loose(st); add(ukLoose, l); if (l.length >= 4) add(ukLoose, l.slice(0, -1));
+    }
+  });
+});
+const PRON = { "я":"ма","мене":"мам","мені":"мам","мій":"мас","моя":"мас","моє":"мас","мої":"мас","ти":"ѳи","тебе":"ѳим","тобі":"ѳим","твій":"ѳис","твоя":"ѳис","твоє":"ѳис","твої":"ѳис","він":"ен","вона":"ен","воно":"ен","його":"еном","її":"еном","йому":"еном","ми":"мар","нас":"маром","нам":"маром","наш":"марис","наша":"марис","ви":"ѳир","вас":"ѳиром","ваш":"ѳирис","вони":"енар","їх":"енаром","їм":"енаром","їхній":"енарис","і":"ве","й":"ве","та":"ве","але":"нак","або":"оли","бо":"зан","що":"кѣ","якщо":"ес","не":"жа-","так":"ай","ні":"жа","чи":"хе" };
+function ukToZ(word) {
+  const w = word.toLowerCase().replace(/[ʼ'’]/g, "");
+  if (PRON[w]) return [PRON[w], "займенник/службове", true];
+  const st = ukStem(w), l = loose(st);
+  const verbish = /(ю|у|еш|єш|ить|ать|ять|іть|ють|ують|ла|ло|ли|в|ти|ть|мо|те|ся|сь)$/.test(w) && w.length > 3;
+  const adjish = /(ий|ій|а|е|і|ого|ому|ою|их|ими)$/.test(w) && !verbish;
+  const pick = slot => slot && (verbish && slot["дс"] || adjish && slot["пр"] || slot["ім"] && !verbish && slot["ім"] || slot.any);
+  let hit = pick(ukExact.get(w)) || pick(ukStemMap.get(st)) || pick(ukLoose.get(l)) || (l.length >= 4 ? pick(ukLoose.get(l.slice(0, -1))) : null);
+  if (hit) return [DATA[hit[0]][0], DATA[hit[0]][2], true];
+  return [word, "немає в словнику", false];
+}
+const CASES = [["ом","знах."],["м","знах."],["ис","род."],["с","род."],["ѣ","місц."],["ку","оруд."],["от","відкл."],["т","відкл."],["",""]];
+const VERB = [["ылылѣш",""],["ылѣт","умовн. мин."],["ылыл","давноминулий"],["ылѣш","дієприсл. мин."],["ылин","дієприкм. мин."],["ошин","дієприкм. майб."],["ыл","минулий"],["ош","майбутній"],["ѣт","умовний"],["ѣш","дієприсл."],["ими","наказ. ввічл."],["ин","дієприкм."],["ут","дієприкм. пас."],["а","теперішній"],["и","наказовий"]];
+const ZPRON = {};
+[["ма","я"],["ѳи","ти"],["ен","він/вона/воно"],["мар","ми"],["ѳир","ви"],["енар","вони"],["са","себе"]].forEach(([z, u]) => {
+  const vow = isV(z.at(-1));
+  ZPRON[z] = [u, ""]; ZPRON[z + (vow ? "м" : "ом")] = [u, "знах."]; ZPRON[z + (vow ? "с" : "ис")] = [u, "род. / присвійний"];
+  ZPRON[z + "ѣ"] = [u, "місц."]; ZPRON[z + "ку"] = [u, "оруд."]; ZPRON[z + (vow ? "т" : "от")] = [u, "відкл."];
+});
+function zAnalyse(word) {
+  const w = word.toLowerCase();
+  if (ZPRON[w]) return ZPRON[w];
+  if (byWord.has(w)) { const r = DATA[byWord.get(w)]; return [r[2], ""]; }
+  const prefixes = [["",""],["жа","не"],["ѳо","док."],["са","зворотн."],["жаѳо","не, док."],["ѳоса","док., зворотн."],["жаса","не, зворотн."]];
+  for (const [p, pl] of prefixes) {
+    let rest = w;
+    if (p) { if (!w.startsWith(p)) continue; rest = w.slice(p.length).replace(/^ъ/, ""); }
+    for (const [vs, vl] of VERB) {
+      if (!vs || !rest.endsWith(vs)) continue;
+      let stem = rest.slice(0, -vs.length);
+      for (const mid of ["", "ус", "ит", "ув"]) {
+        let s = stem;
+        if (mid) { if (!s.endsWith(mid)) continue; s = s.slice(0, -mid.length); }
+        const cands = [s + "ѫн"]; if (s.endsWith("й")) cands.push(s.slice(0, -1) + "ѫн");
+        for (const c of cands) {
+          for (const lemma of [c, p ? p + c : null].filter(Boolean)) {
+            if (byWord.has(lemma) && DATA[byWord.get(lemma)][1] === "дс") {
+              const tag = [lemma === c ? pl : "", mid === "ус" ? "пасив" : mid === "ит" ? "спонук." : mid === "ув" ? "повтор." : "", vl].filter(Boolean).join(", ");
+              return [DATA[byWord.get(lemma)][2], tag];
+            }
+          }
+        }
+      }
+    }
+    if (p) continue;
+    for (const [cs, cl] of CASES) {
+      if (!rest.endsWith(cs)) continue;
+      const base = rest.slice(0, rest.length - cs.length);
+      for (const [pls, pll] of [["", ""], ["ен", "мн."], ["н", "мн."]]) {
+        if (pls && !base.endsWith(pls)) continue;
+        const lemma = pls ? base.slice(0, -pls.length) : base;
+        if (lemma && byWord.has(lemma)) {
+          const r = DATA[byWord.get(lemma)];
+          if (cs && !["ім","займ","числ"].includes(r[1])) continue;
+          const ok = !cs || (isV(lemma.at(-1)) === (cs.length === 1 && !["ѣ"].includes(cs)) || cs === "ѣ" || cs === "ку" || pls);
+          if (ok) return [r[2], [pll, cl].filter(Boolean).join(", ")];
+        }
+      }
+    }
+  }
+  if (["ма","ѳи","ен","мар","ѳир","енар"].some(x => w.startsWith(x))) {}
+  return [null, ""];
+}
+let dir = "uz";
+function translate() {
+  const text = $("#src").value;
+  const words = text.match(/[\p{L}ʼ'’-]+/gu) || [];
+  const out = $("#tr-out"); out.innerHTML = "";
+  const plain = [];
+  let miss = 0;
+  words.forEach(w => {
+    let z, g, ok;
+    if (dir === "uz") { [z, g, ok] = ukToZ(w); }
+    else { const [uk, tag] = zAnalyse(w); ok = !!uk; z = w; g = ok ? uk.split(";")[0] + (tag ? ` · ${tag}` : "") : "не знайдено"; }
+    if (!ok) miss++;
+    plain.push(dir === "uz" ? z : (ok ? g.split(" · ")[0].split(",")[0] : `[${w}]`));
+    out.insertAdjacentHTML("beforeend", `<div class="tok${ok ? "" : " miss"}"><span class="zz">${esc(z)}</span><span class="gg">${esc(g)}</span></div>`);
+  });
+  $("#tr-plain").textContent = plain.join(" ").replace(/жа- (\S+)/g, "жа$1");
+  $("#tr-head").textContent = dir === "uz" ? "Пословний переклад" : "Розбір слів";
+  $("#tr-note").textContent = dir === "uz"
+    ? "Перекладач підбирає корені слово за словом. Порядок слів і закінчення розставте за граматикою: дієслово в кінці, відмінкові закінчення на іменниках." + (miss ? ` Не знайдено: ${miss}.` : "")
+    : "Розбір знімає закінчення відмінків, часів і префікси жа-, ѳо-, са- та показує словникову форму." + (miss ? ` Не розпізнано: ${miss}.` : "");
+}
+$("#src").addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(translate, 150); });
+function setDir(d) {
+  dir = d;
+  $("#dir-uz").className = "btn" + (d === "uz" ? "" : " ghost");
+  $("#dir-zu").className = "btn" + (d === "zu" ? "" : " ghost");
+  $("#src").value = d === "uz" ? "Я люблю кота і зірки" : "Ма заутр лѣсѣ ѳис дрѣном видош";
+  translate();
+}
+$("#dir-uz").onclick = () => setDir("uz");
+$("#dir-zu").onclick = () => setDir("zu");
+
+// ---------- tabs ----------
+document.querySelectorAll("nav button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("nav button").forEach(x => x.setAttribute("aria-selected", x === b));
+  document.querySelectorAll(".pane").forEach(p => { p.hidden = p.id !== "p-" + b.dataset.tab; if (!p.hidden) p.style.display = "flex"; });
+}));
+if (location.hash === "#translate") document.querySelector('[data-tab="tr"]').click();
+search(); translate();
+</script>
